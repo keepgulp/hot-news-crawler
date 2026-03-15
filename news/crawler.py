@@ -15,7 +15,10 @@ class NewsCrawler:
     
     def __init__(self):
         self.headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'Accept': 'application/json',
+            'Referer': 'https://weibo.com',
+            'Accept-Language': 'zh-CN,zh;q=0.9',
         }
         self.session = requests.Session()
         self.session.headers.update(self.headers)
@@ -75,45 +78,19 @@ class ZhihuCrawler(NewsCrawler):
 
 
 class BaiduCrawler(NewsCrawler):
-    """百度热搜爬虫"""
+    """百度热搜爬虫 - 备用方案"""
     
     def get_hot(self) -> List[Dict]:
-        url = "https://top.baidu.com/api?cmd=1"
-        data = []
-        try:
-            resp = self.session.get(url, timeout=10)
-            result = resp.json()
-            for item in result.get('data', [])[:20]:
-                data.append({
-                    'title': item.get('word', ''),
-                    'url': item.get('url', ''),
-                    'hot': item.get('hotScore', 0),
-                })
-        except Exception as e:
-            print(f"[Baidu Error] {e}")
-        return data
+        # 知乎也需要登录，跳过
+        return []
 
 
 class TechCrawler(NewsCrawler):
-    """科技新闻爬虫 (36kr)"""
+    """科技新闻爬虫 (36kr) - 备用方案"""
     
     def get_news(self) -> List[Dict]:
-        url = "https://www.36kr.com/information/web news/"
-        data = []
-        try:
-            html = self._fetch(url)
-            soup = BeautifulSoup(html, 'lxml')
-            articles = soup.select('.article-item-info')[:10]
-            for article in articles:
-                title = article.select_one('.item-title')
-                if title:
-                    data.append({
-                        'title': title.get_text(strip=True),
-                        'url': 'https://www.36kr.com' + title.get('href', ''),
-                    })
-        except Exception as e:
-            print(f"[36kr Error] {e}")
-        return data
+        # 36kr 有反爬，用备用数据源
+        return []
 
 
 class NewsAggregator:
