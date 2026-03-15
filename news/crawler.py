@@ -60,17 +60,18 @@ class ZhihuCrawler(NewsCrawler):
     """知乎热榜爬虫"""
     
     def get_hot(self) -> List[Dict]:
-        url = "https://www.zhihu.com/api/v3/feed/topstory/hot-lists/total?limit=20"
+        url = "https://api.zhihu.com/topstory/hot-lists/total?limit=20"
         data = []
         try:
+            # 使用正确的知乎 API
             resp = self.session.get(url, timeout=10)
             result = resp.json()
             for item in result.get('data', []):
                 target = item.get('target', {})
                 data.append({
                     'title': target.get('title', ''),
-                    'url': f"https://www.zhihu.com/question/{target.get('id', '')}",
-                    'hot': target.get('detail_text', ''),
+                    'url': target.get('url', '').replace('api.zhihu.com', 'www.zhihu.com'),
+                    'hot': item.get('detail_text', ''),
                 })
         except Exception as e:
             print(f"[Zhihu Error] {e}")
