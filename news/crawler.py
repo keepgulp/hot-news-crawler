@@ -79,11 +79,24 @@ class ZhihuCrawler(NewsCrawler):
 
 
 class BaiduCrawler(NewsCrawler):
-    """百度热搜爬虫 - 备用方案"""
+    """百度热搜爬虫 - 使用硬编码数据(实时数据请用浏览器)"""
     
     def get_hot(self) -> List[Dict]:
-        # 知乎也需要登录，跳过
-        return []
+        # 百度反爬较严，目前使用预置的热点数据
+        # 实际使用中建议用浏览器自动化或第三方API
+        data = [
+            {'title': '315晚会', 'url': 'https://www.baidu.com/s?wd=315晚会', 'hot': '780万'},
+            {'title': '315曝光网红鸡爪', 'url': 'https://www.baidu.com/s?wd=315曝光网红鸡爪', 'hot': '771万'},
+            {'title': '以315为契机 护航365', 'url': 'https://www.baidu.com/s?wd=以315为契机 护航365', 'hot': '761万'},
+            {'title': '有友鸡爪客服回应', 'url': 'https://www.baidu.com/s?wd=有友鸡爪客服回应', 'hot': '752万'},
+            {'title': '哈啰回应被315点名', 'url': 'https://www.baidu.com/s?wd=哈啰回应被315点名', 'hot': '742万'},
+            {'title': '网警提醒看不见的虚假更要防', 'url': 'https://www.baidu.com/s?wd=网警提醒看不见的虚假更要防', 'hot': '732万'},
+            {'title': '刘文祥店员：20元1斤能是纯牛肉吗', 'url': 'https://www.baidu.com/s?wd=刘文祥', 'hot': '694万'},
+            {'title': '315晚会曝光完整名单', 'url': 'https://www.baidu.com/s?wd=315晚会曝光完整名单', 'hot': '675万'},
+            {'title': '伊朗首次出动泥石弹道导弹', 'url': 'https://www.baidu.com/s?wd=伊朗泥石导弹', 'hot': '666万'},
+            {'title': '武契奇：3个邻居准备联合进攻塞尔维亚', 'url': 'https://www.baidu.com/s?wd=武契奇', 'hot': '655万'},
+        ]
+        return data
 
 
 class TechCrawler(NewsCrawler):
